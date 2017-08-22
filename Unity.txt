@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class button : MonoBehaviour {
+
+	public GameObject PathA;
+	public GameObject PathB;
+	public float speed = 0.2f;
+	private float firstSpeed;
+	public Color defaultioncolor;
+	public Color selectioncolor;
+	private Material mat;
+
+
+	void Start(){
+		firstSpeed = Vector3.Distance (transform.position, PathB.transform.position) * speed;
+		mat = GetComponent<Renderer> ().material;
+	}
+
+	void OnMouseDown(){
+		transform.position = Vector3.Lerp (transform.position, PathB.transform.position, speed);
+		mat.color = selectioncolor;
+	}
+
+	private float calculateNewSpeed()
+	{
+		float tmp = Vector3.Distance (transform.position, PathB.transform.position);
+		if (tmp == 0)
+			return tmp;
+		else
+			return(firstSpeed / tmp);
+	}
+
+	void OnMouseUp(){
+		mat.color = defaultioncolor;
+	}
+		
+
+}
+
