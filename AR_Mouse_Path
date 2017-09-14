@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Path_dumper : MonoBehaviour {
+
+	public Transform[] path;
+	public float speed = 1.0f;
+	public float reachDist = 1.0f;
+	public int currentpoint;
+
+	void Start () {
+		
+	}
+
+	void OnMouseDrag() {
+
+		Vector3 dir = path [currentpoint].position - transform.position;
+
+		transform.position += dir * Time.deltaTime * speed;
+
+		if (dir.magnitude <= reachDist) {
+			currentpoint++;
+		}
+		if (currentpoint >= path.Length) {
+			currentpoint = 0;
+		}
+		
+	}
+
+	void OnDrawGizmos(){
+		if (path.Length > 0)
+			for (int i = 0; i < path.Length; i++) {
+				if (path [i] != null) {
+					Gizmos.DrawSphere (path [i].position, reachDist);
+				}
+			}
+	}
+}
