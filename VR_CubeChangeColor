@@ -1,0 +1,51 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class InteractionCube : MonoBehaviour {
+
+	private float gazeTime = 2.0f;
+
+	private float Timer;
+
+	private bool GazeAt;
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		if (GazeAt) {
+			Timer += Time.deltaTime;
+
+			Transform child = transform.GetChild (0);
+			Vector3 childScale = new Vector3  (Timer / gazeTime , child.localScale.y, child.localScale.z);
+			Vector3 childPosition = new Vector3 (-0.5f+(Timer /gazeTime)/2 , child.localPosition.y, child.localPosition.z);
+
+			child.localScale = childScale;
+			child.localPosition = childPosition;
+
+
+			if (Timer > gazeTime) {
+				ExecuteEvents.Execute (gameObject ,new PointerEventData(EventSystem.current),ExecuteEvents.pointerEnterHandler);
+				Timer = 0;
+			}
+
+
+		}
+	}
+
+	public void PointDown(){
+		Debug.Log ("Point Down");
+		GazeAt = true;
+	}
+
+	public void PointExit(){
+		//Debug.Log ("Point Exit");
+		GazeAt = false;
+	}
+
+
+}
